@@ -367,6 +367,62 @@
     position: absolute;
   }
 
+  #barheader {
+  padding: 10px;
+  cursor: move;
+  z-index: 10;
+  background-color: #2196F3;
+  color: #fff;
+  width: 362px;
+}
+
+#mapheader {
+  padding: 10px;
+  cursor: move;
+  z-index: 10;
+  background-color: #2196F3;
+  color: #fff;
+  width: 602px;
+}
+  
+#lineheader {
+  padding: 10px;
+  cursor: move;
+  z-index: 10;
+  background-color: #2196F3;
+  color: #fff;
+  width: 482px;
+}
+
+.barheader{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #2196F3;
+  width: 382px;
+}
+
+  .cancel{
+
+  
+  padding-right: 5px;
+}
+
+  .mapheader{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #2196F3;
+  width: 622px;
+}
+
+.lineheader{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #2196F3;
+  width: 502px;
+}
   
   
         </style>
@@ -461,17 +517,32 @@
                   </div>
         </div>
         <div class="mainView">
-            <div id="bar">
+          <div id="bar" ondrag="dragging(event)">
+            <div class="barheader">
+              <div id="barheader" >BarChart</div>
+              <i class="fa fa-window-close fa-2x fa cancel"></i>
+              <i class="fa fa-plus-circle fa-2x"></i> 
+            </div>
                 <svg id="BarChart"  style="transform: rotate(90deg)" >
                     
                 </svg>
             </div>
-            <div>
+            <div id="mapdiv" ondrag="dragging(event)">
+              <div class="mapheader">
+              <div id="mapheader">MapChart</div>
+              <i class="fa fa-window-close fa-2x fa cancel"></i>
+                <i class="fa fa-plus-circle fa-2x"></i> 
+              </div>
                 <svg id="Map">
                     <g id="G"></g>
                 </svg>
             </div>
-            <div>
+            <div id="linediv" ondrag="dragging(event)">
+              <div class="lineheader">
+              <div id="lineheader">LineChart</div>
+              <i class="fa fa-window-close fa-2x fa cancel"></i>
+                <i class="fa fa-plus-circle fa-2x"></i> 
+            </div>
                 <div> 
                   <svg id="container" height="450px" width="500px"> 
                     <g id="body2" style="transform: translate(60px,10px);margin-top:50px ;"></g>
@@ -492,6 +563,17 @@
     
     </body>
     <script>
+       $( function() {
+    $( "#bar" ).draggable();
+    $( "#mapdiv" ).draggable();
+    $( "#linediv" ).draggable();
+  } );
+
+  
+  function dragging(event) {
+ console.log(event.clientX,event.clientY)
+}
+
         let testall
         let store={}
         let slidedata;
