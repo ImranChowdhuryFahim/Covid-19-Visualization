@@ -326,6 +326,20 @@
     text-decoration: none;
     cursor: pointer;
   }
+
+  .close1 {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close1:hover,
+  .close1:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
   
   .round{
     width: 40%;
@@ -360,7 +374,10 @@
     position: absolute;
     color: #2a5599;
   }
-  
+  #trash{
+    margin-left: 48.5%;
+    position: absolute;
+  }
   body {font-family: Arial, Helvetica, sans-serif;}
     h4{
       color: white;
@@ -434,6 +451,9 @@
   background-color: red;
  
 } */
+#bin{
+  margin-left: 100px;
+}
 
         </style>
         <script src="./d3-lasso.min.js"></script>
@@ -480,6 +500,21 @@
           </div>
         
         </div>
+        <div id="myModal1" class="modal">
+    
+          <!-- Modal content -->
+          <div class="modal-content" style="background-color: #2a6592; color:rgb(209, 178, 178);">
+            <span class="close1">&times;</span>
+            <p style="color: white; font-weight: 1em; font-size: 16px; letter-spacing: .3em; ">
+              
+              <h4>Ekhane khali chart gula add korbi :D</h4> 
+              <h4>Add delete function to banoi ase</h4>
+               
+            
+            </p>
+          </div>
+        
+        </div>
         <div class="result">
           
           <div>
@@ -490,6 +525,7 @@
           <!-- <!-- <button onclick="command()">Enter</button> -->
           <i class="fa fa-question-circle fa-2x" aria-hidden="true" id="myBtn"></i>
           <i class="fa fa-refresh fa-2x" aria-hidden="true" id="reset"></i>
+          <i class="fa fa-trash fa-2x" aria-hidden="true" id="trash"></i>
           <!-- <button id="myBtn">Supported Commands</button> -->
           </div>
           <!-- //akane print korbi -->
@@ -525,6 +561,7 @@
                       <input type="text" id="amount" style="border: 0; color: blue; font-weight: bold; background-color: #DCDCDC;" size="30"/>     
                     <div id="slider-range"></div>
                   </div>
+                  <div id="bin"><img id = "binimg" src="trash_recyclebin_empty_closed.png" width="50" height="50" alt=""></div>
         </div>
 
         
@@ -565,7 +602,7 @@
                 <div id="tooltip"></div>
                 <div style="transform: translate(190px,-250px);margin-top:50px ;"></div>
               
-  
+                
   
             </div>
 
@@ -703,7 +740,15 @@
 
 
   function dragging(event) {
- if(event.clientX >= 1500) $('#'+event.target.id).html('')
+    console.log("yes",event.clientY,event.clientX)
+    var binimg = document.getElementById("binimg")
+    if(event.clientX > 1000 || event.clientY <= 265) binimg.src = "img_569538.png"
+    else binimg.src = "trash_recyclebin_empty_closed.png"
+ if(event.clientX >= 1250 && event.clientY <= 130)
+    {
+      $('#'+event.target.id).html('')
+      binimg.src = "trash_recyclebin_empty_closed.png"
+    }
 }
         let testall
         let store={}
@@ -4833,7 +4878,30 @@
   }
   ///end  pop up/////
   
-  //dd
+  //recycle bin here
+  var modal1 = document.getElementById("myModal1");
+  
+  // Get the button that opens the modal
+  var btn1 = document.getElementById("trash");
+
+   // When the user clicks the button, open the modal 
+   btn1.onclick = function() {
+    modal1.style.display = "block";
+  }
+  var span1 = document.getElementsByClassName("close1")[0];
+  // When the user clicks on <span> (x), close the modal
+  span1.onclick = function() {
+    modal1.style.display = "none";
+  }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+    if (event.target == modal1) {
+      modal1.style.display = "none";
+    }
+  }
+
+  //end bin
   
   //////voice recognition ///////
   
@@ -6039,6 +6107,7 @@ class PriorityQueue {
     while (node > top1 && this._greater(node, parent(node))) {
       this._swap(node, parent(node));
       node = parent(node);
+      
     }
   }
   _siftDown() {
