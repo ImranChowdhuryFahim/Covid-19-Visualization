@@ -628,6 +628,9 @@
     <script>
       
     var checkdiv = new Set()
+    var line = document.getElementById("linepng")
+    var bar = document.getElementById("barpng")
+    var map = document.getElementById("mappng")
       
     let bardiv=`<div id="bar" ondrag="dragging(event)">
               <div class="barheader">
@@ -726,45 +729,42 @@
       let id='#'+divname
       $(id).html(divs[divname])
 
-      if(divname=='bar')drawbar(store.done)
+      if(divname=='bar')
+      {
+        drawbar(store.done)
+        
+      }
      else if(divname=='mapdiv')
       {
         drawMap(prep(store.geoJSON))
         drawCircles(store.done,"blue")
+
       }
       else if(divname=='linediv')drawline(store.sumdate)
+        
       }
       else{
         if(restore=='barpng')
         {
            $('#'+'bar').html(divs['bar'])
            drawbar(store.done)
-          //  if(!currentlyvisibledivs.includes('bar'))
-          //  {
-          //   $('#'+restore).remove()
-          //   currentlyvisibledivs.push('bar')
-          //  }
+           bar.src = ""
+           bar.height = 0
            
         }
         else if(restore=='mappng'){
            $('#'+'mapdiv').html(divs['mapdiv'])
            drawMap(prep(store.geoJSON))
            drawCircles(store.done,"blue")
-          //  if(!currentlyvisibledivs.includes('mapdiv'))
-          //  {
-          //   $('#'+restore).remove()
-          //   currentlyvisibledivs.push('mapdiv')
-          //  }
+           map.src = ""
+           map.height = 0
         }
         else if(restore=='linepng')
         {
            $('#'+'linediv').html(divs['linediv'])
            drawline(store.sumdate)
-          //  if(!currentlyvisibledivs.includes('linediv'))
-          //  {
-          //   $('#'+restore).remove()
-          //   currentlyvisibledivs.push('linediv')
-          //  }
+           line.src = ""
+           line.height = 0
         }
       }
          
@@ -786,7 +786,6 @@
     {
       $('#'+event.target.id).html('')
       checkdiv.add(event.target.id) //here we
-      console.log(checkdiv)
       restoreall(checkdiv)
       // currentlyvisibledivs = currentlyvisibledivs.filter((d)=>d!=event.target.id)
       // console.log(currentlyvisibledivs)
@@ -6167,10 +6166,8 @@ class PriorityQueue {
   }
 }
 
+
     function restoreall(all){
-      var line = document.getElementById("linepng")
-      var bar = document.getElementById("barpng")
-      var map = document.getElementById("mappng")
       for( x of all){
         
         if( x == "linediv"){
