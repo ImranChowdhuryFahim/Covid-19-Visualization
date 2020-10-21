@@ -572,7 +572,7 @@ margin-bottom: -80px;
                     <input type="text" id="amount" style="border: 0; color: blue; font-weight: bold; background-color: #DCDCDC;" size="30"/>     
                   <div id="slider-range"></div>
                 </div>
-                <div id="bin"><img id = "binimg" src="trash_recyclebin_empty_closed.png" width="50" height="50" alt="" style="margin-left: 350px;"></div>
+                <div id="bin"></div>
       </div>
 
       
@@ -788,17 +788,12 @@ margin-bottom: -80px;
 
 
 function dragging(event) {
-  var binimg = document.getElementById("binimg")
-  if(event.clientX > 1300 && event.clientY <= 265) binimg.src = "img_569538.png"
-  else binimg.src = "trash_recyclebin_empty_closed.png"
-if(event.clientX >= 1450 && event.clientY <= 130)
+ 
+if((event.clientX >= 570 && event.clientY < 1100) && event.clientY >= 530)
   {
     $('#'+event.target.id).html('')
     checkdiv.add(event.target.id) //here we
     restoreall(checkdiv)
-    // currentlyvisibledivs = currentlyvisibledivs.filter((d)=>d!=event.target.id)
-    // console.log(currentlyvisibledivs)
-    binimg.src = "trash_recyclebin_empty_closed.png"
   }
   
 }
@@ -4930,28 +4925,6 @@ window.onclick = function(event) {
 }
 ///end  pop up/////
 
-//recycle bin here
-var modal1 = document.getElementById("myModal1");
-
-// Get the button that opens the modal
-var btn1 = document.getElementById("trash");
-
- // When the user clicks the button, open the modal 
- btn1.onclick = function() {
-  modal1.style.display = "block";
-}
-var span1 = document.getElementsByClassName("close1")[0];
-// When the user clicks on <span> (x), close the modal
-// span1.onclick = function() {
-//   modal1.style.display = "none";
-// }
-
-  // When the user clicks anywhere outside of the modal, close it
-  window.onclick = function(event) {
-  if (event.target == modal1) {
-    modal1.style.display = "none";
-  }
-}
 
 //end bin
 
