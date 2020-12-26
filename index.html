@@ -476,6 +476,7 @@ margin-bottom: -80px;
       <script src="d3.js"></script>
       <title>COVID-19 Dashboard</title>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+      <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
       <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
@@ -936,7 +937,7 @@ if((event.clientX >= 570 && event.clientY < 1100) && event.clientY >= 530)
         var stdate = slidedata[0].date, endate = slidedata[slidedata.length-1].date; // we are here
         ResultShow(store.currentselectedcountries,currentvis,stdate,endate,store.currentcontinet)
         groupbycontinet()
-        
+        responsiveVoice.speak("Welcome to Miva")
       
       }
       
@@ -1128,6 +1129,12 @@ if((event.clientX >= 570 && event.clientY < 1100) && event.clientY >= 530)
               .transition()
               .duration(500)
               .style("opacity", 0);
+            })
+            .on('click',function(d)
+            {
+              document.getElementById('command').value="select "+d.countries;
+         command();
+         
             })
 
 
@@ -4336,6 +4343,10 @@ ls.push(x.pop())
     
    
   }
+  else if((/ in my country/).test(str))
+  {
+    d3.select("#res").html("Did't recognise the word 'my country' Please choose a country from map")
+  }
 
    else if((/^(find|show)/).test(str) || (/maximum|minimum|highest|lowest/).test(str))
     {
@@ -4943,6 +4954,10 @@ recognition.grammars = speechRecognitionList;
 recognition.lang = 'en-US';
 recognition.interimResults = false;
 
+recognition.start()
+
+let trigger=false;
+
 recognition.onresult = function(event) {
     var last = event.results.length - 1;
     var command1 = event.results[last][0].transcript;
@@ -4950,6 +4965,13 @@ recognition.onresult = function(event) {
    
 
    let str=command1.toLowerCase()
+
+   if(str.includes('niva')|| str.includes("hay fever")|| str.includes("hay") || str.includes("hey")|| str.includes("meewa")|| str.includes("miba"))
+   {
+     trigger=true;
+     str="hey miva"
+     responsiveVoice.speak("The system is listening to you")
+   }
    
    
    if(str.includes("depth"))
@@ -4996,10 +5018,19 @@ recognition.onresult = function(event) {
    }
    if(str.includes("saudi,arabia"))str=str.replace("saudi,arabia","saudi arabia")
    if(str.includes("new,zealand"))str=str.replace("new,zealand","new zealand")
+
+
+   if(trigger){
+
+  trigger=false;
    
    document.querySelector('#command').value=str
 
    command()
+
+   
+
+   }
    
 
 };
@@ -5007,11 +5038,11 @@ recognition.onresult = function(event) {
 
 recognition.onspeechend = function() {
     recognition.stop();
-    // setTimeout(function(){ recognition.start(); }, 400);
+    setTimeout(function(){ recognition.start(); }, 1000);
 };
 
 recognition.onerror = function(event) {
-    message.textContent = 'Error occurred in recognition: ' + event.error;
+  setTimeout(function(){ recognition.start(); }, 1000);
 }        
 
 
@@ -5391,6 +5422,7 @@ function addcomma( num ) {
 
 function call_error(str)
 {
+  trigger=true
 if(str=="max_min")
 {
   d3.select(".res").html("<span style='color:red;'>"+"Please mention the case. Ex: 'maximum death cases'"+"</span>")
@@ -5418,8 +5450,16 @@ for(i of store.lowercountries)
   }
 }
 if(ck){
-d3.select(".res").html("<span style='color:red;'>"+"Invalid Query"+"</span>")
-d3.select(".res1").html("")}
+  if(str.includes("hay")||str.includes("hey"))
+  {
+    d3.select("#res").html("<span style='color:red;'>"+"The system is listening to you......."+"</span>")
+    d3.select(".res1").html("")
+  }
+  else{
+    d3.select(".res").html("<span style='color:red;'>"+"Invalid Query"+"</span>")
+d3.select(".res1").html("")
+  }
+}
 else{
   d3.select(".res").html("<span style='color:red;'>"+"Invalid Query.To select countries using voice command use 'select' keyword.Ex: 'select uk us uae china india'"+"</span>")
 d3.select(".res1").html("")
