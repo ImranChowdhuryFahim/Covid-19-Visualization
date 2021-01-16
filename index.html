@@ -4348,14 +4348,14 @@ ls.push(x.pop())
     d3.select("#res").html("Did't recognise the word 'my country' Please choose a country from map")
   }
 
-   else if((/^(find|show)/).test(str) || (/maximum|minimum|highest|lowest/).test(str))
+   else if((/maximum|minimum|highest|lowest/).test(str))
     {
       
        find_max_min(str);               
 
     }
 
-     else if(((/^(select|show)/).test(str) && (/death cases|confirmed cases|recovered cases|fatal cases/).test(str) )|| (/death cases|confirmed cases|recovered cases|fatal cases/).test(str))
+     else if( (/death cases|confirmed cases|recovered cases|fatal cases/).test(str))
      {
        
       show_cases(str);
@@ -4981,8 +4981,8 @@ recognition.onresult = function(event) {
    if(str.includes("showuth america"))str="south america"
   //  if(str.includes("showuth"))str=str.replace("showuth","south")
    if(str.includes("conference"))str=str.replace("conference","confirmed")
-   if(str.includes("sylhet"))str=str.replace("sylhet","select")
    if(str.includes("so"))str=str.replace("so","show")
+   if(str.includes("sylhet"))str=str.replace("sylhet","select")
    if(str.includes("showuth"))str=str.replace("showuth","south")
    if(str.includes("osmania"))str=str.replace("osmania","oceania")
    if(str.includes("o showniya"))str=str.replace("o showniya","oceania")
@@ -5023,6 +5023,7 @@ recognition.onresult = function(event) {
    if(trigger){
 
   trigger=false;
+   console.log(str)
    
    document.querySelector('#command').value=str
 
