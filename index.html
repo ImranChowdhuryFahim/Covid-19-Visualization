@@ -5019,6 +5019,23 @@ recognition.onresult = function(event) {
    if(str.includes("saudi,arabia"))str=str.replace("saudi,arabia","saudi arabia")
    if(str.includes("new,zealand"))str=str.replace("new,zealand","new zealand")
 
+   if(str.includes("from") && str.includes("to"))
+   {
+     str = str.trim();
+     let splitted_str = str.split(" ");
+     splitted_str[1] = splitted_str[1].replace("st","")
+     splitted_str[1] = splitted_str[1].replace("th","")
+     splitted_str[1] = splitted_str[1].replace("rd","")
+     splitted_str[1] = splitted_str[1].replace("nd","")
+
+     splitted_str[5] = splitted_str[5].replace("st","")
+     splitted_str[5] = splitted_str[5].replace("th","")
+     splitted_str[5] = splitted_str[5].replace("rd","")
+     splitted_str[5] = splitted_str[5].replace("nd","")
+
+     str = "from "+monthNameToNum(splitted_str[2])+"/"+splitted_str[1]+"/"+splitted_str[3]+" to "+monthNameToNum(splitted_str[6])+"/"+splitted_str[5]+"/"+splitted_str[7];
+
+   }
 
    if(trigger){
 
@@ -5060,6 +5077,23 @@ String.prototype.replaceAt=function(index, replacement) {
 
 //end of voice recogition
 
+
+function monthNameToNum(name)
+{
+  if(name== "january" || name == "jan") return 1;
+  else if(name == "february" || name == "feb") return 2;
+  else if(name == "march") return 3;
+  else if(name == "april") return 4;
+  else if(name == "may") return 5;
+  else if(name == "june") return 6;
+  else if(name == "july") return 7;
+  else if(name == "august") return 8;
+  else if(name == "september") return 9;
+  else if(name == "october") return 10;
+  else if(name == "november") return 11;
+  else if(name == "december") return 12;
+
+}
 
 function slideraftervoice(x1,x2){
     {
