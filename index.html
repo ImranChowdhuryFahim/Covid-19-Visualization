@@ -737,9 +737,9 @@ margin-bottom: -80px;
     let divname= event.target.getAttribute('value')
     let id='#'+divname
     $(id).html(divs[divname])
-
     if(divname=='bar')
     {
+    
       drawbar(store.done)
       
     }
@@ -759,6 +759,11 @@ margin-bottom: -80px;
          drawbar(store.done)
          bar.src = ""
          bar.height = 0
+         bar1 = document.getElementById("bar")
+      
+        bar1.style.position = "relative"
+        bar1.style.left = 0
+        bar1.style.top = 0
          
       }
       else if(restore=='mappng'){
@@ -767,11 +772,20 @@ margin-bottom: -80px;
          drawCircles(store.done,"blue")
          map.src = ""
          map.height = 0
+         bar1 = document.getElementById("mapdiv")
+         bar1.style.position = "relative"
+         bar1.style.left = 0
+         bar1.style.top = 0
+
       }
       else if(restore=='linepng')
       {
          $('#'+'linediv').html(divs['linediv'])
          drawline(store.sumdate)
+         bar1 = document.getElementById("linediv")
+         bar1.style.position = "relative"
+         bar1.style.left = 0
+         bar1.style.top = 0
          line.src = ""
          line.height = 0
       }
@@ -790,13 +804,23 @@ margin-bottom: -80px;
 function dragging(event) {
  
 if((event.clientX >= 570 && event.clientY < 1100) && event.clientY >= 530)
-  {
+  {  
+    
     $('#'+event.target.id).html('')
     checkdiv.add(event.target.id) //here we
     restoreall(checkdiv)
+    
   }
+        
+        bar1 = document.getElementById("bar")
+        bar1.style.position = "relative"
+        bar1.style.left = 0
+        bar1.style.top = 0
+
   
 }
+
+
       let testall
       let store={}
       let slidedata;
@@ -2655,9 +2679,10 @@ else{
 
 let lassobar;
       function drawbar(data){
-   //console.log(data)
     lassobar = data;
-             
+      // bar = document.getElementById("bar")
+      // console.log(bar)
+      // bar.style.position = "relative"
 var margin =  {top: 10, right: 0, bottom: 70, left: 55};
 var marginOverview = {top: 10, right: 0, bottom: 70, left: 55};
 var selectorHeight = 15;
@@ -2696,11 +2721,9 @@ var yscale = d3.scaleLinear()
 
 var xAxis  = d3.axisBottom(xscale);
 var yAxis  = d3.axisLeft(yscale).tickFormat(d3.format(".02s"));
-
 var svg = d3.select("#BarChart")
           .attr("width", width + margin.left + margin.right)
           .attr("height", height + margin.top + margin.bottom + selectorHeight);
-
 var diagram = svg.append("g")
                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -3652,7 +3675,7 @@ function  display () {
        if(store.currentselectedcountries.includes(l[i].__data__.country) || store.currentselectedcountries.includes(l[i].__data__.country.toLowerCase()))
        {
          
-        console.log('rong hocce')
+        
          d3.select(l[i]).classed("selected",true)
         
 
@@ -4014,10 +4037,6 @@ function lasso(scal, data, xscale){
                 .classed("possible",true);
                 
                
-                
-              
-               
-                //console.log("I am from lasso data")
 
                 
             
