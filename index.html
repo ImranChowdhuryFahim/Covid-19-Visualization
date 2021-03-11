@@ -476,6 +476,7 @@ margin-bottom: -80px;
       <script src="d3.js"></script>
       <title>COVID-19 Dashboard</title>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+      <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
       <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
@@ -960,7 +961,7 @@ if((event.clientX >= 570 && event.clientY < 1100) && event.clientY >= 530)
         var stdate = slidedata[0].date, endate = slidedata[slidedata.length-1].date; // we are here
         ResultShow(store.currentselectedcountries,currentvis,stdate,endate,store.currentcontinet)
         groupbycontinet()
-        
+        responsiveVoice.speak("Welcome to Miva")
       
       }
       
@@ -1152,6 +1153,12 @@ if((event.clientX >= 570 && event.clientY < 1100) && event.clientY >= 530)
               .transition()
               .duration(500)
               .style("opacity", 0);
+            })
+            .on('click',function(d)
+            {
+              document.getElementById('command').value="select "+d.countries;
+         command();
+         
             })
 
 
@@ -4355,15 +4362,19 @@ ls.push(x.pop())
     
    
   }
+  else if((/ in my country/).test(str))
+  {
+    d3.select("#res").html("Did't recognise the word 'my country' Please choose a country from map")
+  }
 
-   else if((/^(find|show)/).test(str) || (/maximum|minimum|highest|lowest/).test(str))
+   else if((/maximum|minimum|highest|lowest/).test(str))
     {
       
        find_max_min(str);               
 
     }
 
-     else if(((/^(select|show)/).test(str) && (/death cases|confirmed cases|recovered cases|fatal cases/).test(str) )|| (/death cases|confirmed cases|recovered cases|fatal cases/).test(str))
+     else if( (/death cases|confirmed cases|recovered cases|fatal cases/).test(str))
      {
        
       show_cases(str);
@@ -4962,6 +4973,10 @@ recognition.grammars = speechRecognitionList;
 recognition.lang = 'en-US';
 recognition.interimResults = false;
 
+recognition.start()
+
+let trigger=false;
+
 recognition.onresult = function(event) {
     var last = event.results.length - 1;
     var command1 = event.results[last][0].transcript;
@@ -4969,6 +4984,13 @@ recognition.onresult = function(event) {
    
 
    let str=command1.toLowerCase()
+
+   if(str.includes('niva')|| str.includes("hay fever")|| str.includes("hay") || str.includes("hey")|| str.includes("meewa")|| str.includes("miba"))
+   {
+     trigger=true;
+     str="hey miva"
+     responsiveVoice.speak("The system is listening to you")
+   }
    
    
    if(str.includes("depth"))
@@ -4978,8 +5000,8 @@ recognition.onresult = function(event) {
    if(str.includes("showuth america"))str="south america"
   //  if(str.includes("showuth"))str=str.replace("showuth","south")
    if(str.includes("conference"))str=str.replace("conference","confirmed")
-   if(str.includes("sylhet"))str=str.replace("sylhet","select")
    if(str.includes("so"))str=str.replace("so","show")
+   if(str.includes("sylhet"))str=str.replace("sylhet","select")
    if(str.includes("showuth"))str=str.replace("showuth","south")
    if(str.includes("osmania"))str=str.replace("osmania","oceania")
    if(str.includes("o showniya"))str=str.replace("o showniya","oceania")
@@ -5015,10 +5037,37 @@ recognition.onresult = function(event) {
    }
    if(str.includes("saudi,arabia"))str=str.replace("saudi,arabia","saudi arabia")
    if(str.includes("new,zealand"))str=str.replace("new,zealand","new zealand")
+
+   if(str.includes("from") && str.includes("to"))
+   {
+     str = str.trim();
+     let splitted_str = str.split(" ");
+     splitted_str[1] = splitted_str[1].replace("st","")
+     splitted_str[1] = splitted_str[1].replace("th","")
+     splitted_str[1] = splitted_str[1].replace("rd","")
+     splitted_str[1] = splitted_str[1].replace("nd","")
+
+     splitted_str[5] = splitted_str[5].replace("st","")
+     splitted_str[5] = splitted_str[5].replace("th","")
+     splitted_str[5] = splitted_str[5].replace("rd","")
+     splitted_str[5] = splitted_str[5].replace("nd","")
+
+     str = "from "+monthNameToNum(splitted_str[2])+"/"+splitted_str[1]+"/"+splitted_str[3]+" to "+monthNameToNum(splitted_str[6])+"/"+splitted_str[5]+"/"+splitted_str[7];
+
+   }
+
+   if(trigger){
+
+  trigger=false;
+   console.log(str)
    
    document.querySelector('#command').value=str
 
    command()
+
+   
+
+   }
    
 
 };
@@ -5026,16 +5075,18 @@ recognition.onresult = function(event) {
 
 recognition.onspeechend = function() {
     recognition.stop();
-    // setTimeout(function(){ recognition.start(); }, 400);
+    setTimeout(function(){ recognition.start(); }, 1000);
 };
 
 recognition.onerror = function(event) {
-    message.textContent = 'Error occurred in recognition: ' + event.error;
+  setTimeout(function(){ recognition.start(); }, 1000);
 }        
 
 
 document.querySelector('#button').addEventListener('click', function(){
-  recognition.start();
+  console.log("ghuta dio na")
+  trigger=true;
+  responsiveVoice.speak("The system is listening to you")
 })
 
 
@@ -5045,6 +5096,23 @@ String.prototype.replaceAt=function(index, replacement) {
 
 //end of voice recogition
 
+
+function monthNameToNum(name)
+{
+  if(name== "january" || name == "jan") return 1;
+  else if(name == "february" || name == "feb") return 2;
+  else if(name == "march") return 3;
+  else if(name == "april") return 4;
+  else if(name == "may") return 5;
+  else if(name == "june") return 6;
+  else if(name == "july") return 7;
+  else if(name == "august") return 8;
+  else if(name == "september") return 9;
+  else if(name == "october") return 10;
+  else if(name == "november") return 11;
+  else if(name == "december") return 12;
+
+}
 
 function slideraftervoice(x1,x2){
     {
@@ -5410,6 +5478,7 @@ function addcomma( num ) {
 
 function call_error(str)
 {
+  trigger=true
 if(str=="max_min")
 {
   d3.select(".res").html("<span style='color:red;'>"+"Please mention the case. Ex: 'maximum death cases'"+"</span>")
@@ -5437,8 +5506,16 @@ for(i of store.lowercountries)
   }
 }
 if(ck){
-d3.select(".res").html("<span style='color:red;'>"+"Invalid Query"+"</span>")
-d3.select(".res1").html("")}
+  if(str.includes("hay")||str.includes("hey"))
+  {
+    d3.select("#res").html("<span style='color:red;'>"+"The system is listening to you......."+"</span>")
+    d3.select(".res1").html("")
+  }
+  else{
+    d3.select(".res").html("<span style='color:red;'>"+"Invalid Query"+"</span>")
+d3.select(".res1").html("")
+  }
+}
 else{
   d3.select(".res").html("<span style='color:red;'>"+"Invalid Query.To select countries using voice command use 'select' keyword.Ex: 'select uk us uae china india'"+"</span>")
 d3.select(".res1").html("")
